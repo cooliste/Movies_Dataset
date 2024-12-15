@@ -1,0 +1,556 @@
+---
+title: "CovidData"
+author: "Ziyade CHABI MACO"
+date: "2024-12-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Python part
+#Link1: Exercise 1:first 5 rows from COVID-19 dataset, printing the dataset information and check the missing values.
+```{r print}
+
+# Charger les bibliothèques nécessaires
+library(dplyr)
+library(readr)
+
+# Charger les données à partir du fichier CSV en ligne
+covid_data <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-17-2020.csv")
+
+# Afficher les premières lignes des données
+print("Dataset:")
+print(head(covid_data))
+
+# Afficher les informations sur le dataset
+cat("\nDataset information:\n")
+glimpse(covid_data)
+
+# Informations sur les données manquantes
+cat("\nMissing data information:\n")
+missing_data <- colSums(is.na(covid_data))
+print(missing_data)
+
+```
+
+#Python part
+#Link1: Exercise 2:Getting the latest number of confirmed, deaths, recovered and active cases of Novel Coronavirus (COVID-19) Country wise.
+```{r print}
+
+# Load necessary library
+library(dplyr)
+
+# Read the CSV file directly from the URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-17-2020.csv"
+covid_data <- read.csv(url)
+
+# Calculate the 'Active' cases
+covid_data$Active <- covid_data$Confirmed - covid_data$Deaths - covid_data$Recovered
+
+# Group by 'Country/Region' and summarize the data
+result <- covid_data %>%
+  group_by(Country.Region) %>%
+  summarise(
+    Confirmed = sum(Confirmed, na.rm = TRUE),
+    Deaths = sum(Deaths, na.rm = TRUE),
+    Recovered = sum(Recovered, na.rm = TRUE),
+    Active = sum(Active, na.rm = TRUE)
+  )
+
+# Print the result
+print(result)
+
+```
+
+#Python part
+#Link1: Exercise 3:Getting the latest number of confirmed, deaths, recovered and active cases of Novel Coronavirus (COVID-19) Country wise.
+```{r print}
+# Load necessary libraries
+library(dplyr)
+
+# Read the CSV file directly from the URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-16-2020.csv"
+covid_data <- read.csv(url)
+
+# Group by 'Country/Region' and 'Province/State' and take the maximum of 'Confirmed', 'Deaths', and 'Recovered'
+data <- covid_data %>%
+  group_by(Country.Region, Province.State) %>%
+  summarise(
+    Confirmed = max(Confirmed, na.rm = TRUE),
+    Deaths = max(Deaths, na.rm = TRUE),
+    Recovered = max(Recovered, na.rm = TRUE)
+  )
+
+# Print all rows (to avoid truncation, similar to `pd.set_option('display.max_rows', None)` in Python)
+print(data, n = Inf)
+
+
+```
+
+#Python part
+#Link1: Exercise 4:Getting the Chinese province wise cases of confirmed, deaths and recovered cases of Novel Coronavirus (COVID-19).
+```{r print}
+# Load necessary libraries
+library(dplyr)
+
+# Read the CSV file directly from the URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-17-2020.csv"
+covid_data <- read.csv(url)
+
+# Group by 'Country/Region' and calculate the sum of 'Confirmed', 'Deaths', and 'Recovered'
+data <- covid_data %>%
+  group_by(Country.Region) %>%
+  summarise(
+    Confirmed = sum(Confirmed, na.rm = TRUE),
+    Deaths = sum(Deaths, na.rm = TRUE),
+    Recovered = sum(Recovered, na.rm = TRUE)
+  )
+
+# Filter rows where 'Confirmed' equals 'Deaths'
+result <- data %>%
+  filter(Confirmed == Deaths) %>%
+  select(Country.Region, Confirmed, Deaths)
+
+# Sort by 'Confirmed' in descending order
+result <- result %>%
+  arrange(desc(Confirmed))
+
+# Keep rows where 'Confirmed' > 0 and reset the row index
+result <- result %>%
+  filter(Confirmed > 0) %>%
+  mutate(Row = row_number()) %>% # Adds a row index
+  select(-Row)                  # Optional: drop the row index column
+
+# Print the result
+print(result)
+
+
+```
+
+#Python part
+#Link1: Exercise 5:Getting the latest country wise deaths cases of Novel Coronavirus (COVID-19).
+```{r print}
+# Load necessary libraries
+library(dplyr)
+
+# Read the CSV file directly from the URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-17-2020.csv"
+covid_data <- read.csv(url)
+
+# Group by 'Country/Region' and calculate the sum of 'Confirmed', 'Deaths', and 'Recovered'
+data <- covid_data %>%
+  group_by(Country.Region) %>%
+  summarise(
+    Confirmed = sum(Confirmed, na.rm = TRUE),
+    Deaths = sum(Deaths, na.rm = TRUE),
+    Recovered = sum(Recovered, na.rm = TRUE)
+  )
+
+# Filter rows where Deaths > 0 and select 'Country/Region' and 'Deaths'
+result <- data %>%
+  filter(Deaths > 0) %>%
+  select(Country.Region, Deaths)
+
+# Print the result
+print(result)
+
+
+```
+
+#Python part
+#Link1: Exercise 6:listing countries with no cases of Novel Coronavirus (COVID-19) recovered.
+```{r print}
+# Load necessary libraries
+library(dplyr)
+
+# Read the CSV file directly from the URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-17-2020.csv"
+covid_data <- read.csv(url)
+
+# Group by 'Country/Region' and calculate the sum of 'Confirmed', 'Deaths', and 'Recovered'
+data <- covid_data %>%
+  group_by(Country.Region) %>%
+  summarise(
+    Confirmed = sum(Confirmed, na.rm = TRUE),
+    Deaths = sum(Deaths, na.rm = TRUE),
+    Recovered = sum(Recovered, na.rm = TRUE)
+  )
+
+# Filter rows where 'Recovered' is 0 and select relevant columns
+result <- data %>%
+  filter(Recovered == 0) %>%
+  select(Country.Region, Confirmed, Deaths, Recovered)
+
+# Print the result
+print(result)
+
+```
+
+#Python part
+#Link1: Exercise 7:listing countries with all cases of Novel Coronavirus (COVID-19) died.
+```{r print}
+# Charger les bibliothèques nécessaires
+library(dplyr)
+library(readr)
+
+# Charger les données à partir du fichier CSV en ligne
+covid_data <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-17-2020.csv")
+
+# Grouper les données par 'Country/Region' et calculer les sommes pour 'Confirmed', 'Deaths' et 'Recovered'
+data <- covid_data %>%
+  group_by(`Country/Region`) %>%
+  summarise(
+    Confirmed = sum(Confirmed, na.rm = TRUE),
+    Deaths = sum(Deaths, na.rm = TRUE),
+    Recovered = sum(Recovered, na.rm = TRUE)
+  )
+
+# Filtrer les pays où Confirmed == Deaths
+result <- data %>%
+  filter(Confirmed == Deaths) %>%
+  select(`Country/Region`, Confirmed, Deaths)
+
+# Trier les résultats par Confirmed dans l'ordre décroissant
+result <- result %>%
+  arrange(desc(Confirmed))
+
+# Filtrer les pays avec un nombre de cas Confirmed > 0
+result <- result %>%
+  filter(Confirmed > 0)
+
+# Réinitialiser les index
+result <- result %>%
+  mutate(row_id = row_number()) %>%
+  select(-row_id)
+
+# Afficher les résultats finaux
+print(result)
+
+
+```
+
+#Python part
+#Link1: Exercise 8:listing countries with all cases of Novel Coronavirus (COVID-19) recovered.
+```{r print}
+# Load necessary libraries
+library(dplyr)
+
+# Read the CSV file directly from the URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-17-2020.csv"
+covid_data <- read.csv(url)
+
+# Group by 'Country/Region' and calculate the sum of 'Confirmed', 'Deaths', and 'Recovered'
+data <- covid_data %>%
+  group_by(Country.Region) %>%
+  summarise(
+    Confirmed = sum(Confirmed, na.rm = TRUE),
+    Deaths = sum(Deaths, na.rm = TRUE),
+    Recovered = sum(Recovered, na.rm = TRUE)
+  )
+
+# Filter rows where 'Confirmed' equals 'Recovered'
+result <- data %>%
+  filter(Confirmed == Recovered) %>%
+  select(Country.Region, Confirmed, Recovered)
+
+# Sort by 'Confirmed' in descending order
+result <- result %>%
+  arrange(desc(Confirmed))
+
+# Keep rows where 'Confirmed' > 0 and reset the row index
+result <- result %>%
+  filter(Confirmed > 0)
+
+# Print the result
+print(result)
+
+
+```
+
+#Python part
+#Link1: Exercise 9:Getting the top 10 countries data (Last Update, Country/Region, Confirmed, Deaths, Recovered) of Novel Coronavirus (COVID-19).
+
+
+```{r print}
+
+# Load necessary libraries
+library(dplyr)
+
+# Read the CSV file directly from the URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-18-2020.csv"
+covid_data <- read.csv(url)
+
+# Select only relevant columns
+covid_data <- covid_data %>%
+  select(Last.Update, Country.Region, Confirmed, Deaths, Recovered)
+
+# Group by 'Country/Region', find the maximum value for each group, and sort by 'Confirmed' in descending order
+result <- covid_data %>%
+  group_by(Country.Region) %>%
+  summarise(
+    Last.Update = max(Last.Update, na.rm = TRUE),
+    Confirmed = max(Confirmed, na.rm = TRUE),
+    Deaths = max(Deaths, na.rm = TRUE),
+    Recovered = max(Recovered, na.rm = TRUE)
+  ) %>%
+  arrange(desc(Confirmed)) %>%
+  slice(1:10)  # Get the top 10 rows
+
+# Print the result
+print(result)
+
+```
+
+#Python part
+#Link1: Exercise 10:create a plot (lines) of total deaths, confirmed, recovered and active cases Country wise where deaths greater than 150.
+```{r print}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+
+# Read the CSV file directly from the URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-19-2020.csv"
+covid_data <- read.csv(url)
+
+# Select only the relevant columns
+covid_data <- covid_data %>%
+  select(Last.Update, Country.Region, Confirmed, Deaths, Recovered)
+
+# Create the 'Active' column
+covid_data <- covid_data %>%
+  mutate(Active = Confirmed - Deaths - Recovered)
+
+# Group by 'Country/Region' and calculate the sum of relevant columns
+r_data <- covid_data %>%
+  group_by(Country.Region) %>%
+  summarise(
+    Deaths = sum(Deaths, na.rm = TRUE),
+    Confirmed = sum(Confirmed, na.rm = TRUE),
+    Recovered = sum(Recovered, na.rm = TRUE),
+    Active = sum(Active, na.rm = TRUE)
+  )
+
+# Filter countries with more than 50 deaths
+r_data <- r_data %>%
+  filter(Deaths > 150) %>%
+  arrange(desc(Deaths))
+
+# Plot the data
+ggplot(r_data, aes(x = Country.Region)) +
+  geom_line(aes(y = Deaths, color = "Deaths"), group = 1) +
+  geom_line(aes(y = Confirmed, color = "Confirmed"), group = 1) +
+  geom_line(aes(y = Recovered, color = "Recovered"), group = 1) +
+  geom_line(aes(y = Active, color = "Active"), group = 1) +
+  labs(
+    title = "Total Deaths (>150), Confirmed, Recovered, and Active Cases by Country",
+    x = "Country",
+    y = "Number of Cases"
+  ) +
+  scale_color_manual(
+    name = "Legend",
+    values = c("Deaths" = "red", "Confirmed" = "green", "Recovered" = "blue", "Active" = "black")
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(hjust = 0.5)
+  )
+
+```
+
+#Python part
+#Link1: Exercise 11:visualize the state/province wise death cases of Novel Coronavirus (COVID-19) in USA.
+```{r print}
+# Load necessary libraries
+library(dplyr)
+library(plotly)
+
+# Read the COVID-19 data from the provided URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-17-2020.csv"
+covid_data <- read.csv(url)
+
+# Filter data for the US and drop unnecessary columns
+us_data <- covid_data %>%
+  filter(Country.Region == "US") %>%
+  select(-Country.Region, -Latitude, -Longitude)
+
+# Remove rows where all numeric values are zero
+us_data <- us_data %>%
+  filter(rowSums(across(where(is.numeric), ~ .x), na.rm = TRUE) > 0)
+
+# Group by 'Province/State' and sum 'Deaths'
+us_data <- us_data %>%
+  group_by(Province.State) %>%
+  summarise(Deaths = sum(Deaths, na.rm = TRUE))
+
+# Filter states with more than 0 deaths
+us_data_death <- us_data %>%
+  filter(Deaths > 0)
+
+# Create a bar plot using plotly
+state_fig <- plot_ly(
+  data = us_data_death,
+  x = ~Province.State,
+  y = ~Deaths,
+  type = "bar",
+  text = ~Deaths,
+  textposition = "outside",
+  marker = list(color = "red")
+) %>%
+  layout(
+    title = "State-wise Deaths Reported of COVID-19 in USA",
+    xaxis = list(title = "Province/State"),
+    yaxis = list(title = "Number of Deaths"),
+    showlegend = FALSE
+  )
+
+# Show the plot
+state_fig
+
+```
+
+#Python part
+#Link1: Exercise 12:visualize the state/province wise Active cases of Novel Coronavirus (COVID-19) in USA.
+```{r print}
+# Charger les bibliothèques nécessaires
+library(dplyr)
+library(readr)
+library(ggplot2)
+
+# Charger les données à partir du fichier CSV en ligne
+covid_data <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-18-2020.csv")
+
+# Ajouter une colonne 'Active' calculée
+covid_data <- covid_data %>%
+  mutate(Active = Confirmed - Deaths - Recovered)
+
+# Filtrer les données pour les États-Unis et supprimer des colonnes inutiles
+us_data <- covid_data %>%
+  filter(`Country/Region` == "US") %>%
+  select(-`Country/Region`, -Latitude, -Longitude)
+
+# Supprimer les lignes avec une somme des valeurs <= 0
+us_data <- us_data[rowSums(select_if(us_data,is.numeric), na.rm = TRUE) > 0, ]
+
+# Grouper par 'Province/State' et sommer les cas 'Active'
+us_data <- us_data %>%
+  group_by(`Province/State`) %>%
+  summarise(Active = sum(Active, na.rm = TRUE))
+
+# Filtrer les états avec des cas 'Active' > 0
+us_data_death <- us_data %>%
+  filter(Active > 0)
+
+# Créer un graphique à barres avec ggplot2
+state_fig <- ggplot(us_data_death, aes(x = reorder(`Province/State`, -Active), y = Active, label = Active)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_text(vjust = -0.5, color = "black") +
+  labs(
+    title = "State wise recovery cases of COVID-19 in USA",
+    x = "Province/State",
+    y = "Active Cases"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Afficher le graphique
+print(state_fig)
+
+```
+
+#Python part
+#Link1: Exercise 13:Visualize the state/province wise combine number of confirmed, deaths, recovered, active Novel Coronavirus (COVID-19) cases in USA.
+```{r print}
+# Charger les bibliothèques nécessaires
+library(dplyr)
+library(readr)
+library(tidyr)
+library(ggplot2)
+
+# Charger les données à partir du fichier CSV en ligne
+covid_data <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-19-2020.csv")
+
+# Ajouter une colonne 'Active' calculée
+covid_data <- covid_data %>%
+  mutate(Active = Confirmed - Deaths - Recovered)
+
+# Filtrer les données pour les États-Unis et supprimer les colonnes inutiles
+combine_us_data <- covid_data %>%
+  filter(`Country/Region` == "US") %>%
+  select(-`Country/Region`, -Latitude, -Longitude)
+
+# Supprimer les lignes avec une somme des valeurs <= 0
+combine_us_data <- combine_us_data %>%
+  filter(rowSums(select_if(., is.numeric), na.rm = TRUE) > 0)
+
+# Grouper par 'Province/State' et sommer les colonnes numériques
+combine_us_data <- combine_us_data %>%
+  group_by(`Province/State`) %>%
+  summarise(
+    Confirmed = sum(Confirmed, na.rm = TRUE),
+    Deaths = sum(Deaths, na.rm = TRUE),
+    Recovered = sum(Recovered, na.rm = TRUE),
+    Active = sum(Active, na.rm = TRUE)
+  )
+
+# Transformer les données en format long
+combine_us_data_long <- combine_us_data %>%
+  pivot_longer(
+    cols = c(Confirmed, Deaths, Recovered, Active),
+    names_to = "Case",
+    values_to = "Count"
+  )
+
+# Créer un graphique à barres avec ggplot2
+fig <- ggplot(combine_us_data_long, aes(x = reorder(`Province/State`, -Count), y = Count, fill = Case, label = Count)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(position = position_dodge(width = 0.9), vjust = -0.5, size = 3) +
+  labs(
+    title = "USA State wise combine number of confirmed, deaths, recovered, active COVID-19 cases",
+    x = "Province/State",
+    y = "Count"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Afficher le graphique
+print(fig)
+
+```
+
+#Python part
+#Link1: Exercise 14:visualize Worldwide Confirmed Novel Coronavirus (COVID-19) cases over time.
+```{r print}
+# Charger les bibliothèques nécessaires
+library(dplyr)
+library(readr)
+library(ggplot2)
+
+# Charger les données à partir du fichier CSV en ligne
+covid_data <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-19-2020.csv")
+
+# Grouper les données par 'Last Update' et sommer 'Confirmed' et 'Deaths'
+grouped <- covid_data %>%
+  group_by(`Last Update`) %>%
+  summarise(
+    Confirmed = sum(Confirmed, na.rm = TRUE),
+    Deaths = sum(Deaths, na.rm = TRUE)
+  )
+
+# Créer un graphique de ligne pour les cas confirmés dans le temps
+fig <- ggplot(grouped, aes(x = as.POSIXct(`Last Update`, format = "%Y-%m-%d %H:%M:%S"), y = Confirmed)) +
+  geom_line(color = "steelblue", size = 1) +
+  labs(
+    title = "Worldwide Confirmed Novel Coronavirus (COVID-19) Cases Over Time",
+    x = "Last Update",
+    y = "Confirmed Cases"
+  ) +
+  theme_minimal()
+
+# Afficher le graphique
+print(fig)
+
+```
+

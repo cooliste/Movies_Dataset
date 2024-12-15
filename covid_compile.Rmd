@@ -1,0 +1,181 @@
+```{r}
+# Training n°1
+
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+# Step 1: Load and prepare the data
+covid_data <- read.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-19-2020.csv")
+
+# Step 2: Add Active cases and filter for US data
+us_data <- covid_data %>%
+  filter(Country.Region == "US") %>%
+  mutate(Active = Confirmed - Deaths - Recovered) %>%
+  select(Province.State, Confirmed, Deaths, Recovered, Active) %>%
+  group_by(Province.State) %>%
+  summarise(across(c(Confirmed, Deaths, Recovered, Active), sum, na.rm = TRUE))
+
+# Step 3: Transform data for visualization
+us_data_long <- us_data %>%
+  pivot_longer(cols = c(Confirmed, Deaths, Recovered, Active),
+               names_to = "Case", values_to = "Count")
+
+# Step 4: Create the bar chart
+ggplot(us_data_long, aes(x = reorder(Province.State, -Count), y = Count, fill = Case, label = Count)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(position = position_dodge(width = 0.9), vjust = -0.5, size = 3) +
+  labs(
+    title = "State-wise COVID-19 Cases in the USA",
+    x = "State",
+    y = "Number of Cases",
+    fill = "Case Type"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_brewer(palette = "Set2")
+
+
+# Training n°2
+
+
+# Read the CSV file directly from the URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-17-2020.csv"
+covid_data <- read.csv(url)
+
+# Calculate the 'Active' cases
+covid_data$Active <- covid_data$Confirmed - covid_data$Deaths - covid_data$Recovered
+
+# Group by 'Country/Region' and summarize the data
+result <- covid_data %>%
+  group_by(Country.Region) %>%
+  summarise(
+    Confirmed = sum(Confirmed, na.rm = TRUE),
+    Deaths = sum(Deaths, na.rm = TRUE),
+    Recovered = sum(Recovered, na.rm = TRUE),
+    Active = sum(Active, na.rm = TRUE)
+  )
+
+# Print the result
+print(result)
+
+## end
+
+# Training n°3
+
+# Read the CSV file directly from the URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-17-2020.csv"
+covid_data <- read.csv(url)
+
+# Group by 'Country/Region' and calculate the sum of 'Confirmed', 'Deaths', and 'Recovered'
+data <- covid_data %>%
+  group_by(Country.Region) %>%
+  summarise(
+    Confirmed = sum(Confirmed, na.rm = TRUE),
+    Deaths = sum(Deaths, na.rm = TRUE),
+    Recovered = sum(Recovered, na.rm = TRUE)
+  )
+
+# Filter rows where 'Confirmed' equals 'Deaths'
+result <- data %>%
+  filter(Confirmed == Deaths) %>%
+  select(Country.Region, Confirmed, Deaths)
+
+# Sort by 'Confirmed' in descending order
+result <- result %>%
+  arrange(desc(Confirmed))
+
+# Keep rows where 'Confirmed' > 0 and reset the row index
+result <- result %>%
+  filter(Confirmed > 0) %>%
+  mutate(Row = row_number()) %>% # Adds a row index
+  select(-Row)                  # Optional: drop the row index column
+
+# Print the result
+print(result)
+
+# Training n°4
+library(dplyr)
+
+# Read the CSV file directly from the URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-16-2020.csv"
+covid_data <- read.csv(url)
+
+# Group by 'Country/Region' and 'Province/State' and take the maximum of 'Confirmed', 'Deaths', and 'Recovered'
+data <- covid_data %>%
+  group_by(Country.Region, Province.State) %>%
+  summarise(
+    Confirmed = max(Confirmed, na.rm = TRUE),
+    Deaths = max(Deaths, na.rm = TRUE),
+    Recovered = max(Recovered, na.rm = TRUE)
+  )
+
+# Print all rows (to avoid truncation, similar to `pd.set_option('display.max_rows', None)` in Python)
+print(data, n = Inf)
+
+
+# Training n°
+
+# Load necessary libraries
+library(dplyr)
+library(plotly)
+
+# Read the COVID-19 data from the provided URL
+url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-18-2020.csv"
+covid_data <- read.csv(url)
+
+# Add the 'Active' cases column
+covid_data <- covid_data %>%
+  mutate(Active = Confirmed - Deaths - Recovered)
+
+# Filter data for the US and drop unnecessary columns
+us_data <- covid_data %>%
+  filter(Country.Region == "US") %>%
+  select(-Country.Region, -Latitude, -Longitude)
+
+# Remove rows where all numeric values are zero
+us_data <- us_data %>%
+  filter(rowSums(across(where(is.numeric), ~ .x), na.rm = TRUE) > 0)
+
+# Group by 'Province/State' and sum 'Active' cases
+us_data <- us_data %>%
+  group_by(Province.State) %>%
+  summarise(Active = sum(Active, na.rm = TRUE))
+
+# Filter states with Active cases > 0
+us_data_active <- us_data %>%
+  filter(Active > 0)
+
+# Create a bar plot using plotly
+state_fig <- plot_ly(
+  data = us_data_active,
+  x = ~Province.State,
+  y = ~Active,
+  type = "bar",
+  text = ~Active,
+  textposition = "outside",
+  marker = list(color = "blue")
+) %>%
+  layout(
+    title = "State-wise Active Cases of COVID-19 in USA",
+    xaxis = list(title = "Province/State"),
+    yaxis = list(title = "Active Cases"),
+    showlegend = FALSE
+  )
+# Show the plot
+state_fig
+
+# Link2Exercise.
+# TODO: read each row from a given csv file and print a list of strings.
+# Load the CSV file
+data <- read.csv("C:/Users/ziyad/Documents/Python_Learning/Python_andR/Python/base3.csv", stringsAsFactors = FALSE)
+
+# Print each row
+apply(data, 1, function(row) {
+  print(paste(row, collapse = ", "))
+})
+
+
+
+#
