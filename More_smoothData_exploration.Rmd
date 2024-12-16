@@ -1,0 +1,111 @@
+---
+title: 'dplyr basics: More smooth data exploration'
+author: "Ziyade CHABI MACO"
+date: "2024-12-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#link3.Exercise 1: Load required packages and data.
+```{r }
+# Load necessary libraries
+
+library(dplyr)
+install.packages("AER")
+library(AER)
+
+# Load the Fertility dataset
+data("Fertility")
+
+# Glimpse at the data
+glimpse(Fertility)
+
+
+```
+
+# link3.Exercise 2: Select rows 35 to 50 and display age and work columns
+```{r }
+
+library(dplyr)
+
+Fertility %>%
+  slice(35:50) %>%
+  select(age, work)
+
+```
+
+#link3.Exercise 3: Select the last row in the dataset.
+```{r }
+library(dplyr)
+
+Fertility %>%
+  slice(n())  # Selects the last row
+
+```
+
+#link3.Exercise 4: Count how many women proceeded to have a third child.
+```{r}
+library(dplyr)
+Fertility %>%
+  filter(morekids == 1) %>%  # `morekids` column indicates if the woman had a third child
+  count()
+
+```
+
+#link3.Exercise 5: Determine the most common gender combination for the first two children.
+```{r }
+library(dplyr)
+Fertility %>%
+  count(gender1, gender2) %>%  # Count combinations of `gender1` and `gender2`
+  arrange(desc(n)) %>%        # Sort in descending order
+  slice(1)                    # Select the most common combination
+
+
+```
+
+#link3.Exercise 6: Proportion of women working four weeks or less in 1979 by racial composition.
+```{r }
+library(dplyr)
+Fertility %>%
+  group_by(afam, hispanic, other) %>%
+  summarise(mean(work <= 4))
+  
+```
+
+#link3.Exercise 7: Proportion of women aged 22–24 with a boy as their firstborn.
+```{r }
+Fertility %>%
+  filter(age >= 22, age <= 24) %>%          # Filter for women aged 22 to 24
+  summarise(proportion_boys = mean(gender1 == "male", na.rm = TRUE))  # Calculate proportion of firstborn boys
+
+```
+
+#link3.Exercise 8: Add a new column for age squared.
+```{r }
+Fertility <- Fertility %>%
+  mutate(age_squared = age^2)
+
+# Display the updated dataset
+glimpse(Fertility)
+
+```
+
+#link3.Exercise 9: Racial composition with the lowest proportion of boys for their firstborn.
+```{r }
+Fertility %>%
+  group_by(afam, hispanic, other) %>%
+  summarise(prop_boys_fb = mean(gender1 == "male"), n = n()) %>%
+  arrange(prop_boys_fb)
+
+```
+
+#link3.Exercise 10: proportion of women who have a third child by gender combination of the first two children
+```{r }
+Fertility %>%
+  group_by(gender1, gender2) %>%
+  summarise(mean(morekids == "yes"))
+
+```
+

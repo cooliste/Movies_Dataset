@@ -1,0 +1,308 @@
+---
+title: "Pandas IMDb Movies Data Analysis"
+author: "Ziyade CHABI MACO"
+date: "2024-12-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r print}
+#Link3: Exercise 1:Get the columns of the DataFrame
+df <- read.csv("https://github.com/cooliste/Dataset_movies/raw/refs/heads/main/movies_metadata.csv", stringsAsFactors = FALSE)
+
+# Print the column names
+cat("Columns of the DataFrame:\n")
+print(colnames(df))
+```
+
+
+```{r print}
+##Link3: Exercise 2:  get the information of the DataFrame (movies_metadata.csv file)including data types and memory usage
+
+# Charger les bibliothèques nécessaires
+library(readr)
+library(dplyr)
+
+# Lire le fichier CSV
+df <- read_csv("https://github.com/cooliste/Dataset_movies/raw/refs/heads/main/movies_metadata.csv", col_types = cols(.default = "c"))
+problems(df)
+# Afficher les détails du DataFrame
+cat("Details of the DataFrame:\n")
+glimpse(df)
+# glimpse fournit une vue d'ensemble du Dataframe like df.info()
+
+```
+
+
+```{r print}
+##Link3: Exercise 3
+df <- read.csv("https://github.com/cooliste/Dataset_movies/raw/refs/heads/main/movies_metadata.csv", stringsAsFactors = FALSE)
+
+# Get the details of the third movie
+third_movie <- df[3, ]
+cat("Details of the third movie:\n")
+print(third_movie)
+```
+
+
+```{r print}
+##Link3: Exercise 4:Count the number of rows and columns of the DataFrame
+df <- read.csv("https://github.com/cooliste/Dataset_movies/raw/refs/heads/main/movies_metadata.csv", stringsAsFactors = FALSE)
+
+# Get the dimensions of the DataFrame
+result <- dim(df)
+cat("Number of rows and columns of the DataFrame:\n")
+print(result)
+
+```
+
+
+```{r print}
+##Link3: Exercise 5:Get the details of the columns title and genres of the DataFrame.
+# Charger les données à partir du fichier CSV
+df <- read.csv("https://github.com/cooliste/Dataset_movies/raw/refs/heads/main/movies_metadata.csv")
+
+# Extraire les colonnes "title" et "genres"
+result <- df[, c("title", "genres")]
+
+# Afficher les résultats
+cat("Details of title and genres:\n")
+print(result)
+
+
+```
+
+
+```{r print}
+##Link3: Exercise 6: get the details of the movie with title 'Grumpier Old Men'.
+df <- read.csv("movies_metadata.csv", stringsAsFactors = FALSE)
+
+# Définir "title" comme index (en R, cela équivaut à le convertir en rownames)
+rownames(df) <- df$title
+
+# Récupérer les détails du film "Grumpier Old Men"
+result <- df["Grumpier Old Men", ]
+
+# Afficher les résultats
+cat("Details of the movie 'Grumpier Old Men':\n")
+print(result)
+
+```
+
+
+```{r print}
+## Link3: Exercise 7: Get the details of  fifth movie of the DataFrame.
+df <- read.csv("movies_metadata.csv", stringsAsFactors = FALSE)
+
+# Récupérer les détails du cinquième film
+result <- df[5, ]
+
+# Afficher les résultats
+cat("Details of the fifth movie of the DataFrame:\n")
+print(result)
+
+```
+
+
+```{r print}
+## Link3: Exercise 8: 
+
+df <- read.csv("movies_metadata.csv", stringsAsFactors = FALSE)
+
+small_df <- df[, c("title", "release_date", "budget", "revenue", "runtime")]
+
+# Afficher les premières lignes du DataFrame plus petit
+cat("Smaller DataFrame:\n")
+head(small_df)
+
+
+```
+
+
+```{r print}
+## Link3: Exercise 9: displaying the first 10 rows of the DataFrame.
+
+# Charger les données à partir du fichier CSV
+df <- read.csv('movies_metadata.csv', stringsAsFactors = FALSE)
+
+# Afficher les 10 premières lignes du DataFrame
+cat("First 10 rows of the DataFrame:\n")
+head(df, 10)
+
+
+```
+
+
+```{r print}
+## Link3: Exercise 10:Sorting the DataFrame based on release_date 
+df <- read.csv('movies_metadata.csv', stringsAsFactors = FALSE)
+
+# Créer un DataFrame plus petit
+small_df <- df[, c('title', 'release_date', 'budget', 'revenue', 'runtime')]
+
+# Trier le DataFrame par 'release_date'
+result <- small_df[order(as.Date(small_df$release_date, format = "%Y-%m-%d")), ]
+
+# Afficher le DataFrame trié par date de sortie
+cat("DataFrame based on release date.\n")
+print(result)
+
+
+```
+
+
+```{r print}
+## Link3: Exercise 11: Access those movies,released after 1995-01-01.
+# Charger les données à partir du fichier CSV
+df <- read.csv('movies_metadata.csv', stringsAsFactors = FALSE)
+
+# Créer un DataFrame plus petit
+small_df <- df[, c('title', 'release_date', 'budget', 'revenue', 'runtime')]
+
+# Trier le DataFrame par 'release_date'
+result <- small_df[order(as.Date(small_df$release_date, format = "%Y-%m-%d")), ]
+
+# Afficher le DataFrame trié par date de sortie
+cat("DataFrame based on release date.\n")
+print(result)
+
+```
+
+
+
+```{r sort_runtime}
+## Link3: Exercise 12:Sort movies on runtime in descending order
+# Charger les bibliothèques nécessaires
+library(readr)
+
+# Lire le fichier CSV
+df <- read_csv("movies_metadata.csv")
+
+# Créer un sous-ensemble du DataFrame
+small_df <- df[, c("title", "release_date", "budget", "revenue", "runtime")]
+
+# Trier les films par durée (runtime) dans l'ordre décroissant
+result <- small_df[order(-small_df$runtime), ]
+
+# Afficher les 5 premières lignes du DataFrame trié
+print("DataFrame sorted on Runtime.")
+head(result)
+
+
+```
+
+
+```{r sort_runtime}
+## Link3: Exercise 13: Get those movies whose revenue more than 2 million and spent less than 1 million
+# Charger les bibliothèques nécessaires
+library(readr)
+
+# Lire le fichier CSV
+df <- read_csv("movies_metadata.csv")
+
+# Créer un sous-ensemble du DataFrame
+small_df <- df[, c("title", "release_date", "budget", "revenue", "runtime")]
+
+# Trier les films par durée (runtime) dans l'ordre décroissant
+result <- small_df[order(-small_df$runtime), ]
+
+# Afficher les 5 premières lignes du DataFrame trié
+print("DataFrame sorted on Runtime.")
+head(result)
+
+
+```
+
+
+
+```{r sort_runtime}
+## Link3: Exercise 14:Get the longest runtime and shortest runtime.
+
+# Charger la bibliothèque nécessaire
+library(readr)
+
+# Lire le fichier CSV
+df <- read_csv("movies_metadata.csv")
+
+# Créer un sous-ensemble du DataFrame avec les colonnes 'title' et 'runtime'
+small_df <- df[, c("title", "runtime")]
+
+# Afficher le sous-ensemble
+print(small_df)
+
+# Afficher la plus grande et la plus petite durée de film
+cat("===============================================\n")
+cat("Longest runtime\n")
+print(max(small_df$runtime, na.rm = TRUE))  # Utilisation de na.rm = TRUE pour ignorer les NA
+cat("Shortest runtime\n")
+print(min(small_df$runtime, na.rm = TRUE))
+
+
+```
+
+
+
+```{r sort_runtime}
+## Link3: Exercise 15:
+# Charger la bibliothèque nécessaire
+library(readr)
+
+# Lire le fichier CSV
+df <- read_csv("movies_metadata.csv")
+
+# Calculer le 70e percentile de la colonne 'vote_count'
+result <- quantile(df$vote_count, 0.70, na.rm = TRUE)
+
+# Afficher le résultat
+print(result)
+
+```
+
+
+
+```{r sort_runtime}
+## Link3: Exercise 16: Movies longer than 30 minutes and shorter than 360 minutes
+# Charger la bibliothèque nécessaire
+library(readr)
+
+# Lire le fichier CSV
+df <- read_csv("movies_metadata.csv")
+
+# Sélectionner les colonnes 'title' et 'runtime'
+small_df <- df[, c("title", "runtime")]
+
+# Filtrer les films dont la durée est entre 30 et 360 minutes
+result <- small_df[small_df$runtime >= 30 & small_df$runtime <= 360, ]
+
+# Afficher le résultat
+print("List of movies longer than 30 minutes and shorter than 360 minutes:")
+print(result)
+
+```
+
+
+
+```{r sort_runtime}
+## Link3: Exercise 17: Displaying the movies (title, number of votes) that received specified number of votes
+# Charger la bibliothèque nécessaire
+library(readr)
+
+# Lire le fichier CSV
+df <- read_csv('https://github.com/cooliste/Movies_Dataset/blob/12f11e6cf9df9a05ce533ca1190e4571c1c225d2/movies_metadata.csv')
+
+# Définir le nombre minimal de votes
+n <- 500
+
+# Créer un sous-ensemble de données avec les colonnes 'title' et 'vote_count'
+small_df <- df[, c("title", "vote_count")]
+
+# Filtrer les lignes avec un nombre de votes supérieur ou égal à n
+result <- small_df[small_df$vote_count >= n, ]
+
+# Afficher le résultat
+cat("List of movies longer than 30 minutes and shorter than 360 minutes:\n")
+print(result)
+```

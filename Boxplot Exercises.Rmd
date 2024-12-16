@@ -1,0 +1,100 @@
+---
+title: "Replicating Plots – Boxplot Exercises"
+author: "Ziyade CHABI MACO"
+date: "2024-12-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Link5: Replicating Plots – Boxplot Exercises
+#Exercice 1 : Boxplot par défaut de Sepal.Width stratifié par Species
+```{r }
+# Boxplot par défaut
+boxplot(Sepal.Width ~ Species, data = iris)
+
+```
+
+#Link5: Replicating Plots – Boxplot Exercises
+#Exercice 2 : Changer la plage de l'axe y pour qu'elle commence à 2 et se termine à 4.5
+```{r }
+boxplot(Sepal.Width ~ Species, data = iris, ylim = c(2, 4.5))
+
+```
+#Link5: Replicating Plots – Boxplot Exercises
+#Exercice 3 : Supprimer les ticks et les étiquettes des axes
+```{r }
+boxplot(Sepal.Width ~ Species, data = iris, ylim = c(2, 4.5), axes = FALSE)
+
+```
+#Link5: Replicating Plots – Boxplot Exercises
+#Exercice 4 : Ajouter des notches (entailles) pour représenter les intervalles de confiance autour de la médiane
+```{r }
+boxplot(Sepal.Width ~ Species, data = iris, ylim = c(2, 4.5), notch = TRUE)
+
+```
+#Link5: Replicating Plots – Boxplot Exercises
+#Exercice 5 : Augmenter la distance entre les boîtes
+```{r }
+boxplot(Sepal.Width ~ Species, data = iris, ylim = c(2, 4.5), notch = TRUE, space = 2)
+
+```
+
+#Link5: Replicating Plots – Boxplot Exercises
+#Exercice 6 : Changer la couleur des bordures des boîtes en bleu
+```{r }
+boxplot(Sepal.Width ~ Species, data = iris, ylim = c(2, 4.5), notch = TRUE, border = "blue")
+
+```
+#Link5: Replicating Plots – Boxplot Exercises
+#Exercice 7 :
+a. Changer la couleur des lignes médianes en rouge
+b. Changer l'épaisseur des lignes médianes à 1
+```{r }
+boxplot(Sepal.Width ~ Species, data = iris, ylim = c(2, 4.5), notch = TRUE, border = "blue",
+        medcol = "red", medlwd = 1)
+
+```
+#Link5: Replicating Plots – Boxplot Exercises
+#Exercice 8 :
+a. Changer la couleur des points pour les valeurs aberrantes en rouge
+b. Changer le symbole des points aberrants en "+"
+c. Changer la taille des points aberrants à 0.8
+```{r }
+boxplot(Sepal.Width ~ Species, data = iris, ylim = c(2, 4.5), notch = TRUE, border = "blue",
+        medcol = "red", medlwd = 1, outcol = "red", outpch = 3, outcex = 0.8)
+
+```
+#Link5: Replicating Plots – Boxplot Exercises
+#Exercice 9 :
+a. Ajouter un titre au boxplot
+b. Ajouter un label pour l'axe y
+```{r }
+boxplot(Sepal.Width ~ Species, data = iris, ylim = c(2, 4.5), notch = TRUE, border = "blue",
+        medcol = "red", medlwd = 1, outcol = "red", outpch = 3, outcex = 0.8,
+        main = "Boxplot: Sepal Width by Species", ylab = "Sepal Width (cm)")
+
+```
+#Link5: Replicating Plots – Boxplot Exercises
+#Exercice 10 :
+a. Ajouter un axe x semblable à celui de MATLAB
+b. Ajouter un axe y semblable à celui de MATLAB
+c. Ajouter des ticks de l'axe y de l'autre côté
+```{r }
+boxplot(Sepal.Width ~ Species, data = iris, ylim = c(2, 4.5), notch = TRUE, border = "blue",
+        medcol = "red", medlwd = 1, outcol = "red", outpch = 3, outcex = 0.8,
+        main = "Boxplot: Sepal Width by Species", ylab = "Sepal Width (cm)", axes = FALSE)
+
+# Ajouter l'axe x
+axis(1, at = 1:3, labels = levels(iris$Species), las = 1)
+
+# Ajouter l'axe y
+axis(2, at = seq(2, 4.5, by = 0.5), labels = format(as.character(seq(2, 4.5, by = 0.5)), drop0trailing = TRUE))
+
+# Ajouter les ticks de l'axe y de l'autre côté
+axis(4, at = seq(2, 4.5, by = 0.5), labels = FALSE)
+
+```
+

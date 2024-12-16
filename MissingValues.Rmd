@@ -1,0 +1,121 @@
+---
+title: "MissingValues"
+author: "Ziyade CHABI MACO"
+date: "2024-12-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r output}
+# R Prog.
+#Link 2: Exercice1: X output
+X <- c(22, 3, 7, NA, NA, 67)
+length(X)
+
+```
+
+
+```{r sort_runtime}
+# R Prog.
+#Link 2: Exercice 2: Removing all occurrences of NA in X.
+#a
+X <- c(22, 3, 7, NA, NA, 67)
+ X[!is.na(X)]
+
+```
+
+
+```{r sort_runtime}
+# R Prog.
+#Link 2:Exercice3: replace all occurrences of NA with 11?
+#b.
+Y<- c(1,3,12,NA,33,7,NA,21)
+Y[is.na(Y)]= 11
+
+```
+
+
+```{r sort_runtime}
+# R Prog.
+#Link 2:Exercice 4: Count the number of occurrences of NA in X
+X <- c(34,33,65,37,89,NA,43,NA,11,NA,23,NA)
+#b 
+sum(is.na(X))
+
+```
+
+
+```{r rtn_missing}
+# R Prog.
+#Link 2: Exercise 5:  return TRUE for value of W missing in the vector.                           
+ 
+W <- c (11, 3, 5, NA, 6)
+any(is.na(W))
+```
+
+```{r rtn_missing}
+# return TRUE for value of W missing in the vector.
+# R Prog.
+#Link 2: Exercise 6:  return TRUE for value of W missing in the vector.                          
+data(Orange)
+head(Orange)
+Orange$age[Orange$age == 118] <- NA
+ head(Orange)
+```
+
+```{r by_NA}
+# return TRUE for value of W missing in the vector.
+# R Prog.
+#Link 2: Exercise 5:  return TRUE for value of W missing in the vector.                           
+ 
+W <- c (11, 3, 5, NA, 6)
+any(is.na(W))
+```
+
+```{r mean A}
+# return TRUE for value of W missing in the vector.
+# R Prog.
+#Link 2: Exercise 7: calculate the mean of A without the missing value.             
+ 
+A <- c (33, 21, 12, NA, 7, 8)
+any(is.na(W))
+mean(A, na.rm = TRUE)
+```
+
+
+```{r display}
+# return TRUE for value of W missing in the vector.
+# R Prog.
+#Link 2: Exercise 8:Display all rows with missing values in X 
+c1 <- c(1,2,3,NA) 
+c2 <- c(2,4,6,89) 
+c3 <- c(45,NA,66,101)  
+X <- rbind (c1,c2,c3, deparse.level=1)
+X[rowSums(is.na(X)) > 0, ]
+
+```
+
+
+```{r rows remove}
+# return TRUE for value of W missing in the vector.
+# R Prog.
+#Link 2: Exercise 9:frame which removes all rows with NA values in Name column
+df <- data.frame (Name = c(NA, "Joseph", "Martin", NA, "Andrea"), Sales = c(15, 18, 21, 56, 60), Price = c(34, 52, 21, 44, 20), stringsAsFactors = FALSE)
+df
+df <- df[!is.na(df$Name), ]
+df
+```
+
+
+```{r NA rows}
+# return TRUE for value of W missing in the vector.
+# R Prog.
+#Link 2: Exercise 10: Remove all rows with NA values:  
+ 
+df <- na.omit(df)
+df
+```

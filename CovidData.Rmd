@@ -279,7 +279,7 @@ print(result)
 library(dplyr)
 
 # Read the CSV file directly from the URL
-url <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-18-2020.csv"
+url <- "https://github.com/cooliste/Movies_Dataset/blob/main/movies_metadata.csv"
 covid_data <- read.csv(url)
 
 # Select only relevant columns
@@ -469,8 +469,7 @@ library(readr)
 library(tidyr)
 library(ggplot2)
 
-# Charger les données à partir du fichier CSV en ligne
-covid_data <- read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/03-19-2020.csv")
+# Charger les données à https://github.com/cooliste/Movies_Dataset/blob/main/movies_metadata.csv")
 
 # Ajouter une colonne 'Active' calculée
 covid_data <- covid_data %>%
